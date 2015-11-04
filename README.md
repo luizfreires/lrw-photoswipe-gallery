@@ -12,7 +12,7 @@ Plugin for implement PhotoSwipe JS plugin in default galleries WordPress.
 
 <h2>Description</h2>
 
-LRW PhotoSwipe Gallery is a image gallery plugin that apply PhotoSwipe JS plugin, by Dmitry Semenov [PhotoSwipe](http://photoswipe.com/ "PhotoSwipe"), in default WordPress gallery.
+LRW PhotoSwipe Gallery is a image gallery plugin that apply [PhotoSwipe](http://photoswipe.com/ "PhotoSwipe") JS plugin, by Dmitry Semenov, in default WordPress gallery.
 This plugin extended the built in gallery WordPress for that works with PhotoSwipe. The inclusion of a gallery works the same way.
 
 Customize PhotoSwipe options at Settings > LRW PhotoSwipe Gallery.
