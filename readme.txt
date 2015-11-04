@@ -26,6 +26,12 @@ This section describes how to install the plugin and get it working.
 3. Upload some photos to the post or page where you want insert the gallery
 4. Use WordPress upload editor to create a gallery and insert it
 
+== Frequently Asked Questions ==
+
+= What is the plugin license? =
+
+* This plugin this licensed as GPL.
+
 == Screenshots ==
 
 1. Screenshot plugin admin settings
