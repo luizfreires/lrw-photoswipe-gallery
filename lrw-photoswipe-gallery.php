@@ -3,7 +3,7 @@
  * Plugin Name:       LRW PhotoSwipe Gallery
  * Plugin URI:        https://github.com/luizrw
  * Description:       Plugin for implement PhotoSwipe JS plugin in default galleries WordPress.
- * Version:           1.0.1
+ * Version:           1.0.2
  * Author:            LRW
  * Author URI:        https://github.com/luizrw
  * License:           GPL-2.0+
@@ -60,9 +60,18 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 			// Apply filter to default gallery shortcode
 			add_filter( 'wp_get_attachment_link', array( &$this, 'data_size' ), 10, 6 );
 			add_filter( 'post_gallery', array( &$this, 'photoswipe_gallery' ), 10, 2 );
-			add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
-			add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
-			add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
+
+			if ( get_option('photoswipe_settings') == 1 ) {
+				if ( is_singular() ) {
+					add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
+					add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
+					add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
+				}
+			} else {
+				add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
+				add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
+				add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
+			}
 		}
 
 		/**
@@ -323,16 +332,10 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 		 * Enqueue scripts
 		 */
 		function setup_scripts() {
-			$options = get_option('photoswipe_settings');
-
-			if ( $options['active_conditional'] == 1 ) {
-				if ( is_singular() ) {
-					wp_enqueue_script( 'photoswipe-lib', plugin_dir_url( __FILE__ ) . 'assets/js/photoswipe.min.js', array() );
-					wp_enqueue_script( 'photoswipe', plugin_dir_url( __FILE__ ) . 'assets/js/photoswipe-init.js', array( 'photoswipe-lib', 'jquery' ) );
-					wp_enqueue_style( 'photoswipe-lib', plugin_dir_url( __FILE__ ) . 'assets/css/photoswipe.css', false );
-					wp_enqueue_style( 'photoswipe-default-skin', plugin_dir_url( __FILE__ ) . 'assets/css/default-skin/default-skin.css ', false );
-				}
-			}
+			wp_enqueue_script( 'photoswipe-lib', plugin_dir_url( __FILE__ ) . 'assets/js/photoswipe.min.js', array() );
+			wp_enqueue_script( 'photoswipe', plugin_dir_url( __FILE__ ) . 'assets/js/photoswipe-init.js', array( 'photoswipe-lib', 'jquery' ) );
+			wp_enqueue_style( 'photoswipe-lib', plugin_dir_url( __FILE__ ) . 'assets/css/photoswipe.css', false );
+			wp_enqueue_style( 'photoswipe-default-skin', plugin_dir_url( __FILE__ ) . 'assets/css/default-skin/default-skin.css ', false );
 		}
 
 		/**
