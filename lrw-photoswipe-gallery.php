@@ -3,7 +3,7 @@
  * Plugin Name:       LRW PhotoSwipe Gallery
  * Plugin URI:        https://github.com/luizrw
  * Description:       Plugin for implement PhotoSwipe JS plugin in default galleries WordPress.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            LRW
  * Author URI:        https://github.com/luizrw
  * License:           GPL-2.0+
