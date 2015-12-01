@@ -4,7 +4,7 @@
 **Tags:** gallery, photoswipe, wordpress gallery, plugin, image gallery  
 **Requires at least:** 3.5  
 **Tested up to:** 4.3  
-**Stable tag:** 1.0.2  
+**Stable tag:** 1.0.3  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -31,6 +31,11 @@ This section describes how to install the plugin and get it working.
 1. Screenshot plugin admin settings
 
 <h2>Changelog</h2>
+
+= 1.0.3 =
+* New conditionals includes
+* Removing unnecessary code
+* Update documentation
 
 = 1.0.2 =
 * Fixed conditionals includes

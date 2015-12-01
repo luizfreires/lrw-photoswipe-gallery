@@ -47,6 +47,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Initialize the plugin public actions.
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		private function __construct() {
 			add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -56,26 +59,16 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 			add_action( 'admin_init', array( &$this, 'admin_init' ) );
 			add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( &$this, 'plugin_action_links' ) );
-
-			// Apply filter to default gallery shortcode
 			add_filter( 'wp_get_attachment_link', array( &$this, 'data_size' ), 10, 6 );
 			add_filter( 'post_gallery', array( &$this, 'photoswipe_gallery' ), 10, 2 );
-
-			if ( get_option('photoswipe_settings') == 1 ) {
-				if ( is_singular() ) {
-					add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
-					add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
-					add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
-				}
-			} else {
-				add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
-				add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
-				add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
-			}
+			add_action( 'init', array( $this, 'conditional_includes' ) );
 		}
 
 		/**
 		 * Load the plugin text domain for translation.
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		public function load_plugin_textdomain() {
 			$domain = 'lrw-photoswipe-gallery';
@@ -86,7 +79,10 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 		}
 
 		/**
+		 * Plugin settings
 		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		public function do_plugin_settings() {
 			if ( false == get_option( 'photoswipe_settings' ) ) {
@@ -96,7 +92,6 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 				$default = array(
 					'active_conditional'    => 1,
 					'loop_images'           => 1,
-					'masonry_active'        => '',
 					'close_button'          => 1,
 					'fullscreen_button'     => 1,
 					'zoom_button'           => 1,
@@ -114,6 +109,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Plugin settings form fields.
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function admin_init() {
 			add_settings_section(
@@ -214,7 +212,7 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 		 */
 		public function html_input_active_conditional() {
 			// $checked = ( isset ( $this->photoswipe_settings['loop_images'] ) ) ? ' checked="checked" ' : '';
-			$html = '<label><input type="checkbox" id="active_conditional" name="photoswipe_settings[active_conditional]" value="1"' . checked( 1, isset( $this->photoswipe_settings['active_conditional'] ), false ) . ' />' . __( 'If true, the plugin scripts enqueue only in singular posts. If not, enqueue in all site.', 'lrw-photoswipe-gallery' ) . '</label>';
+			$html = '<label><input type="checkbox" id="active_conditional" name="photoswipe_settings[active_conditional]" value="1"' . ( checked( 1, isset( $this->photoswipe_settings['active_conditional'] ), false ) ) . ' />' . __( 'If true, the plugin scripts enqueue only in singular posts. If not, enqueue in all site.', 'lrw-photoswipe-gallery' ) . '</label>';
 
 			echo $html;
 		}
@@ -284,6 +282,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Add the settings page.
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function admin_menu(){
 			add_submenu_page(
@@ -300,8 +301,8 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 		 * Action links.
 		 *
 		 * @param  array $links
-		 *
 		 * @return array
+		 * @since 1.0.0
 		 */
 		public function plugin_action_links( $links ) {
 			$plugin_links   = array();
@@ -311,6 +312,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Render the settings page for this plugin.
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		public function html_form_settings(){
 		?>
@@ -330,6 +334,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Enqueue scripts
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function setup_scripts() {
 			wp_enqueue_script( 'photoswipe-lib', plugin_dir_url( __FILE__ ) . 'assets/js/photoswipe.min.js', array() );
@@ -340,6 +347,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Include default ui settings for PhotoSwipe
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function photoswipe_ui_options() {
 			include_once( 'includes/photoswipe-ui-default.php' );
@@ -347,6 +357,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Add HTML necessary for galleries
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function photoswipe_html_footer() {
 			?>
@@ -412,7 +425,32 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 		}
 
 		/**
+		 * Conditional includes
+		 *
+		 * @return void
+		 * @since 1.0.3
+		 */
+		function conditional_includes() {
+			$options = get_option( 'photoswipe_settings' );
+
+			if ( isset( $options['active_conditional'] ) ) {
+				if ( is_singular() ) {
+					add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
+					add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
+					add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
+				}
+			} else {
+				add_filter( 'wp_enqueue_scripts', array( &$this, 'setup_scripts' ) );
+				add_filter( 'wp_footer', array( &$this, 'photoswipe_ui_options' ) );
+				add_filter( 'wp_footer', array( &$this, 'photoswipe_html_footer' ) );
+			}
+		}
+
+		/**
 		 * Filter image attributes to include data-size element
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function data_size ( $html, $id, $size, $permalink, $icon, $text ) {
 			if ( $permalink ) {
@@ -429,6 +467,9 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 		/**
 		 * Custom filter function to modify default gallery shortcode output
+		 *
+		 * @return void
+		 * @since 1.0.0
 		 */
 		function photoswipe_gallery( $output, $attr ) {
 
@@ -627,7 +668,6 @@ if ( ! class_exists( 'LRW_Photoswipe_Gallery' ) ) :
 
 			return $output;
 		}
-
 	}
 
 	add_action( 'plugins_loaded', array( 'LRW_Photoswipe_Gallery', 'get_instance' ), 0 );
